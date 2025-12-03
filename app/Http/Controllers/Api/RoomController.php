@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
@@ -12,6 +12,9 @@ class RoomController extends Controller
 {
     public function index(Request $request)
     {
+
+        return response()->json(['data' => Venue::all()]);
+
         $query = Room::query();
 
         // Search functionality
@@ -19,7 +22,7 @@ class RoomController extends Controller
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('full_description', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
                   ->orWhere('bed_type', 'like', "%{$search}%");
             });
         }
@@ -49,7 +52,7 @@ class RoomController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'full_description' => 'required|string',
+            'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
             'size' => 'required|string',
@@ -119,7 +122,7 @@ class RoomController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'full_description' => 'sometimes|required|string',
+            'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:0',
             'capacity' => 'sometimes|required|integer|min:1',
             'size' => 'sometimes|required|string',

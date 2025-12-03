@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\VenueController;
+use App\Http\Controllers\Api\ReservationController;
+
 
 // Public routes
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -52,3 +55,23 @@ Route::get('/contacts', [ContactController::class, 'index']);
 Route::get('/contacts/{contact}', [ContactController::class, 'show']);
 Route::patch('/contacts/{contact}/status/{status}', [ContactController::class, 'updateStatus']);
 Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);
+
+Route::prefix('v1')->group(function () {
+    
+    // Venues
+    Route::get('/venues', [VenueController::class, 'index']);
+    Route::get('/venues/{venue}', [VenueController::class, 'show']);
+
+    // Reservations
+    Route::get('/reservations', [ReservationController::class, 'index']);
+    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::get('/reservations/{id}', [ReservationController::class, 'show']);
+    Route::patch('/reservations/{id}/status', [ReservationController::class, 'updateStatus']);
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy']);
+    Route::post('/reservations/check-availability', [ReservationController::class, 'checkAvailability']);
+});
+
+Route::prefix('v1')->group(function () {
+    Route::get('/venues', [VenueController::class, 'index']);
+    Route::get('/rooms', [RoomController::class, 'index']);
+});

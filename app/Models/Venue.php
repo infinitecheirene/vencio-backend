@@ -1,41 +1,33 @@
 <?php
-// app/Models/Room.php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Room extends Model
+class Venue extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'price',
         'capacity',
+        'price',
         'size',
-        'bed_type',
         'description',
         'amenities',
         'is_active',
-        'image',
-        'images',
-        'panoramas',
     ];
 
     protected $casts = [
         'amenities' => 'array',
         'is_active' => 'boolean',
-        'images' => 'array',
-        'panoramas' => 'array',
         'price' => 'decimal:2',
-        'capacity' => 'integer',
     ];
 
-    public function reservationRooms()
+    public function reservations()
     {
-        return $this->hasMany(ReservationRoom::class);
+        return $this->hasMany(Reservation::class);
     }
 
     public function scopeActive($query)
@@ -43,3 +35,4 @@ class Room extends Model
         return $query->where('is_active', true);
     }
 }
+
